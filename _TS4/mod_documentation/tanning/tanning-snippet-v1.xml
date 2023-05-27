@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I c="TanningFix" i="snippet" m="tanning.snippet" n="author_whatever" s="fnv64h(author_whatever)"> <!-- 0xhex(fnv64h(author_whatever) -->
+    <T n="version">1</T>
+    <!-- Version 1 is quite simple -->
+    <T n="data">
+{
+}
+    </T>
+</I>
+<!--
+Supported 'BodyType's are in sims.outfits.outfit_enums.BodyType, most commonly used are:
+HAT = 1
+HAIR = 2
+HEAD = 3
+FULL_BODY = 5
+UPPER_BODY = 6
+LOWER_BODY = 7
+SHOES = 8
+NECKLACE = 12
+GLOVES = 13
+SOCKS = 36
+TIGHTS = 42
+The BodyType FULL_BODY may be specified as 'BodyType.FULL_BODY' or 5. 'data' will then start with:
+{
+    'BodyType.FULL_BODY': {  # Quote the string, or:
+    5: {  # Number without quotes. The hex format 0x5 is also supported.
+
+The next element is the CAS Part Instance of the new object to be used as new tanning shadow.
+This may be either an int ID 74565 (also as hex 0x12345) or if GUIDs is installed also a string like 'o19_yfBody_EF01SwimsuitOnePiece_TanThrough'.
+There must be an exact match for the string.
+It will look like this:
+        'o19_yfBody_EF01SwimsuitOnePiece_TanThrough': [...],  # Quote the string, or:
+        74565: [...],  # as dec, or:
+        0x12345: [...],  # as hex
+
+Within [...] the elements to be replaced have to be stored. Once again one can use ID as dec or hex or a string with wildcard support.
+            ['yfBody_EF01SwimsuitOnePiece_*', ],  # Searches all CAS Part IDs with this name, or
+            [1234567890123456, 2345678901234567, ],  # with decimal IDs or
+            [0x1122334455667788, 0x2244668811335577, ],  # as hex or
+            ['yfBody_EF01SwimsuitOnePiece_Green', 1234567890123456, 0x1122334455667788, ...],  # mixed
+
+
+Using names makes testing easy. I highly recommend to keep the name in the file. As soon as EA adds more swatches to
+a CAS Part the naming is kept. 'yfBody_EF01SwimsuitOnePiece_*' will find all variants of this item. If EA adds 4 swatches they will be found.
+Users who use GUIDs will always have an updated configuration.
+For a release one should also add the instance IDs. Anyhow, new CAS Part items will never match the list as they have different unique IDs.
+EA doesn't add swatches to often and if UGC CAS parts are used there will be even less updates so using the instance IDs is quite safe.
+
+
+For each 'BodyType' 1-n replacements outfits are supported.
+Multiple different (or same which makes little sense) 'BodyType's can be added
+A final 'code' section may look like this:
+{
+    5: {  # Start of 'FULL_BODY' 5
+        # The replacements for 'FULL_BODY' follow:
+        12345: [11111, 22222, 33333, 44444, ],  # 1st
+        'foo'': ['foo_yfBody_*', ],  # 2nd - GUIDs should translate foo to 12345 and 'foo_yfBody_*' to [11111, 22222, 33333, 44444, ]
+        98765: [1000, 2000, 3000, 4000, ],  # 3rd
+    },  # Close 'FULL_BODY'
+    'BodyType.UPPER_BODY': {  # Start of UPPER_BODY '6'
+        20: [1, 2, 3, 4, ],  # # 1st replacement outfits for 'UPPER_BODY'
+    },  # Close 'UPPER_BODY'
+}  # Everything behind a '#' is a comment, no need to keep the comments
+
+Without comments one can write it also like this:
+{ 5: {  12345: [11111, 22222, 33333, 44444, ], 'foo'': ['foo_yfBody_*', ],
+        98765: [1000, 2000, 3000, 4000, ],
+    }, 'BodyType.UPPER_BODY': { 20: [1, 2, 3, 4, ], },
+}
+
+TODO: To obtain the IDs a 'o19.guids.search yfBody_EF01SwimsuitOnePiece_*' may be used with the latest GUIDs version.
+
+
+Real World Example:
+Start S4S, select 'Override' > 'CAS' and select the 'yfBody_EF01SwimsuitOnePiece_...' (there are quite with different colors, Shift-click select all).
+y=Young Adult-Elder, f=female, Body=FULL_BODY
+The name of the new item will be 'o19_yfBody_EF01SwimsuitOnePiece_TanThrough'.
+
+Export the diffuse map as 'o19_yfBody_EF01SwimsuitOnePiece_TanThrough.png' or something like this.
+Click on 'Add Swatch' to add a new CAS Part. Click on '[x] Swatch Thumbnail' and 'Clear' to remove some data.
+This CAS PArt will have a unique, completely different instance key which will be fixed later.
+Batch export all CAS Parts so one can extract the IDs from the file names.
+Edit it as much as you like. Opaque areas will not be tanned, the color doesn't matter.
+50% transparent areas will not tan completely and 100% transparent areas may lead to sun burn.
+
+
+Use the hash generator to generate the fnv64 IDs (with High-Bit) in hex and dec:
+Eg: 'o19_yfBody_EF01SwimsuitOnePiece_TanThrough' = (0x) ECA26728CACFC809 = 17051304564077086729 [REF]
+
+One may either add this to the current package (for UGC) or create a new one for EA CAS Parts:
+Start S4S
+S4S > Tools > Create Empty Package [REF.name].package (or use the existing one)
+
+1) Image
+Add > RLE 2 Image > Group: 0, Instance: ECA26728CACFC809 [REF.hex]
+Select the image entry
+Import > File 'o19_yfBody_EF01SwimsuitOnePiece_TanThrough.png'
+
+2) CAS Part
+Import the CAS Part with the completely different instance key.
+Modify:
+Key.Instance to ECA26728CACFC809 [REF.hex]
+PartFlags.Allow*: Uncheck
+PartFlags.Default*: Uncheck
+PartFlags.Show*: Uncheck
+
+3) Snippet Tuning
+Add > Snippet Tuning > Group: 0, Instance: ECA26728CACFC809 (matches the selected item) [REF]
+Select the Snippet Tuning entry
+Insert (n~[REF.name], s=[REF.dec]:
+<?xml version="1.0" encoding="utf-8"?>
+<I c="TanningFix" i="snippet" m="tanning.snippet" n="yfBody_EF01SwimsuitOnePiece_TanThrough" s="17051304564077086729">
+    <T n="version">1</T>
+	<T n="data">
+        {
+            5:
+                0xECA26728CACFC809: {
+                    0x10927, 0x10928, 0x10929, 0x1092A, 0x1092B, 0x1092C, 0x1092D, 0x1092E, 0x1092F,
+                    0x11929, 0x1192A, 0x1192B, 0x1192C, # New swatches
+            },
+        }
+    </T>
+</I>
+
+Save the package file.
+-->

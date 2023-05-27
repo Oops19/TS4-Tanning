@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I c="TanningFix" i="snippet" m="tanning.snippet" n="author_whatever" s="fnv64h(author_whatever)"> <!-- 0xhex(fnv64h(author_whatever) -->
+    <T n="version">2</T>
+    <!-- Version 2 is not yet supported -->
+    <L n="bodyparts">
+        <U>
+            <T n="bodypart">5</T> <!-- Bodypart.FULL_BODY -->
+            <L n="cas_parts">
+                <U>
+                    <T n="new_cas_part">0x0000000000003E3D</T>
+                    <L n="replace_cas_parts">
+                        <E>0xD537767E15118EF2</E> <!-- or T ?-->
+                        <E>0x9150BA7513DF2857</E>
+                        <E>0xF62EE0333103CACB</E>
+                        <E>0xBB10D90FC52930EB</E>
+                        <E>0xF28C785A91D8F85F</E>
+                    </L>
+                </U>
+                <!--
+                <U> ...</U> for another new_cas_part -->
+            </L>
+        </U>
+        <!--
+        <U> ...</U> for another bodypart -->
+    </L>
+</I>
