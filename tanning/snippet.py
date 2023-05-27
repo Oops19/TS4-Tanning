@@ -13,7 +13,6 @@ from sims4.tuning.instances import HashedTunedInstanceMetaclass
 from sims4.tuning.tunable import HasTunableReference, Tunable
 
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
-
 from tanning.modinfo import ModInfo
 
 

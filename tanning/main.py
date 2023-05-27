@@ -14,14 +14,15 @@ from sims4communitylib.events.zone_spin.events.zone_late_load import S4CLZoneLat
 from sims4communitylib.utils.common_injection_utils import CommonInjectionUtils
 from sims4communitylib.utils.common_log_registry import CommonLogRegistry, CommonLog
 from sims4communitylib.utils.resources.common_game_pack_utils import CommonGamePackUtils
-
-from tanning.enums.body_type import BodyType
 from tanning.modinfo import ModInfo
-from tanning.snippet import TanningFix
 
 
 log: CommonLog = CommonLogRegistry.get().register_log(f"{ModInfo.get_identity().name}", ModInfo.get_identity().name)
 log.enable()
+
+
+class TanningFix:
+    pass
 
 
 class Tanning:

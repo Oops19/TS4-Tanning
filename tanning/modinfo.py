@@ -22,10 +22,13 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.7'
+        return '0.0.8'
 
 
 '''
+v0.0.8
+    Import fixes
+    Using Ts4Lib for CommonEnum
 v0.0.7
     Update README and compile.sh
 v0.0.6
